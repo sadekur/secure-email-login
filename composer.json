@@ -1,0 +1,19 @@
+{
+	"name": "secure-email-login/email-login",
+	"description": "Secure Email Login is allows users to login using just their email without password.",
+	"type": "wordpress-plugin",
+	"license": "GPLv2",
+	"authors": [
+		{
+			"name": "Sadekur Rahman",
+			"email": "shadekur.rahman60@gmail.com"
+		}
+	],
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"SecureEmailLogin\\EmailLogin\\": "includes/"
+		},
+		"files": ["includes/functions.php"]
+	}
+}
