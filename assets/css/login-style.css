@@ -1,0 +1,6 @@
+#loginform #user_pass {
+ display: none; 
+}
+#loginform .button-secondary {
+    display: none!important;
+}
