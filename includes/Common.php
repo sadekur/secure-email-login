@@ -24,15 +24,20 @@ class Common {
 
 	public function email_login_authenticate($user, $username, $password) {
 		if (empty($username)) return;
-
+	
+		// Prevent WordPress from continuing with normal auth if this hook returns anything other than null.
 		if (!is_a($user, 'WP_User')) {
 			$user = get_user_by('email', $username);
 			if (!$user) {
 				return new \WP_Error('invalid_email', __('Invalid Email'));
 			}
 		}
+	
+		// If we're here, the user exists, let WordPress handle the rest (like setting cookies)
 		return $user;
 	}
+	
+	
 
 	public function hidden_fields() {
 		?>

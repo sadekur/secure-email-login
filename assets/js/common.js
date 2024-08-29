@@ -3,10 +3,6 @@ jQuery(document).ready(function ($) {
 	$("#loginform").submit(function (e) {
 		e.preventDefault();
 		var email = $("#user_login").val();
-		console.log(email);
-
-		console.log("Email submission URL:", EMAILLOGIN.emailresturl);
-		console.log("OTP verification URL:", EMAILLOGIN.otpresturl);
 
 		$.ajax({
 			url: EMAILLOGIN.emailresturl,
@@ -14,13 +10,13 @@ jQuery(document).ready(function ($) {
 			data: { email: email },
 			success: function (data) {
 				if (data.userExists) {
-					console.log("User exists, check email for login link.");
-					window.location.href = "/login";
+					window.location.href = "/wp-admin"; // Or any other target location
 				} else {
 					$("#otpForm").show();
 					$("#otpEmail").val(email);
 				}
 			},
+
 			error: function (xhr, status, error) {
 				console.error(
 					"Failed to process request:",

