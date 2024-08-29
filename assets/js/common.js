@@ -11,12 +11,11 @@ jQuery(document).ready(function ($) {
 		$.ajax({
 			url: EMAILLOGIN.emailresturl,
 			type: "POST",
-			contentType: "application/json",
-			dataType: "json", // Explicitly expect JSON data in response
-			data: JSON.stringify({ email: email }),
+			data: { email: email },
 			success: function (data) {
 				if (data.userExists) {
 					console.log("User exists, check email for login link.");
+					window.location.href = "/login";
 				} else {
 					$("#otpForm").show();
 					$("#otpEmail").val(email);
@@ -30,31 +29,34 @@ jQuery(document).ready(function ($) {
 					error
 				);
 			},
+			// error: function (status) {
+			// 	console.error("Failed to process request." + status);
+			// },
 		});
 	});
 
 	// Handle the OTP form submission
-	$("#otpForm").submit(function (e) {
-		e.preventDefault();
-		var email = $("#otpEmail").val();
-		var name = $("#otpName").val();
-		var otp = $("#otp").val();
+	// $("#otpForm").submit(function (e) {
+	// 	e.preventDefault();
+	// 	var email = $("#otpEmail").val();
+	// 	var name = $("#otpName").val();
+	// 	var otp = $("#otp").val();
 
-		$.ajax({
-			url: EMAILLOGIN.otpresturl,
-			type: "POST",
-			contentType: "application/json",
-			data: JSON.stringify({ email: email, name: name, otp: otp }),
-			success: function (data) {
-				if (data.success) {
-					console.log("Registration and login successful.");
-				} else {
-					console.log("OTP verification failed.");
-				}
-			},
-			error: function () {
-				console.error("Failed to verify OTP.");
-			},
-		});
-	});
+	// 	$.ajax({
+	// 		url: EMAILLOGIN.otpresturl,
+	// 		type: "POST",
+	// 		contentType: "application/json",
+	// 		data: JSON.stringify({ email: email, name: name, otp: otp }),
+	// 		success: function (data) {
+	// 			if (data.success) {
+	// 				console.log("Registration and login successful.");
+	// 			} else {
+	// 				console.log("OTP verification failed.");
+	// 			}
+	// 		},
+	// 		error: function () {
+	// 			console.error("Failed to verify OTP.");
+	// 		},
+	// 	});
+	// });
 });

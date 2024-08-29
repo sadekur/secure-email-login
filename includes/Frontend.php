@@ -12,7 +12,7 @@ class Frontend {
      * Initialize the class
      */
     function __construct() {
-        echo "Frontend";
+        // echo "Frontend";
         // var_dump(THRAIL_CRM_ASSETS);
         // new Frontend\Shortcode();
     }
