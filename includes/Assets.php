@@ -23,9 +23,9 @@ class Assets {
 
 	public function get_scripts() {
 		return [
-			'email-login-script' => [
-				'src'     => SECURE_EMAIL_LOGIN_ASSETS . '/js/frontend.js',
-				'version' => filemtime(SECURE_EMAIL_LOGIN_PATH . '/assets/js/frontend.js'),
+			'email-common-script' => [
+				'src'     => SECURE_EMAIL_LOGIN_ASSETS . '/js/common.js',
+				'version' => filemtime(SECURE_EMAIL_LOGIN_PATH . '/assets/js/common.js'),
 				'deps'    => ['jquery']
 			],
 		];
@@ -44,19 +44,20 @@ class Assets {
 		$scripts 	= $this->get_scripts();
 		$styles 	= $this->get_styles();
 
-		wp_register_script( 'email-login-script', $scripts[ 'email-login-script' ][ 'src' ], $scripts[ 'email-login-script' ][ 'deps' ], $scripts[ 'email-login-script' ][ 'version' ], true );
+		wp_register_script( 'email-common-script', $scripts[ 'email-common-script' ][ 'src' ], $scripts[ 'email-common-script' ][ 'deps' ], $scripts[ 'email-common-script' ][ 'version' ], true );
 
 
-		// wp_localize_script( 'email-login-script', 'email-login', [
-		// 	'ajaxurl' => admin_url( 'admin-ajax.php'),
-		// 	'resturl' => rest_url( "email-login-crm/v1/submit" ),
-		// 	'nonce'   => wp_create_nonce( 'nonce'),
-		// 	'error'   => __( 'Something went wrong', 'email-login-crm' )
-		// ]);
+		wp_localize_script( 'email-common-script', 'EMAILLOGIN', [
+			'ajaxurl' => admin_url( 'admin-ajax.php'),
+			'emailresturl' => rest_url( "secureemaillogin/v1/submit-email" ),
+			'otpresturl' => rest_url( "secureemaillogin/v1/verify-otp" ),
+			'nonce'   => wp_create_nonce( 'nonce'),
+			'error'   => __( 'Something went wrong', 'email-login-crm' )
+		]);
 
 		wp_register_style( 'email-login-style', $styles[ 'email-login-style' ][ 'src' ], [], $styles[ 'email-login-style' ]['version' ] );
 
-		// wp_enqueue_script( 'email-login-script' );
+		wp_enqueue_script( 'email-common-script' );
 		wp_enqueue_style( 'email-login-style' );
 	}
 

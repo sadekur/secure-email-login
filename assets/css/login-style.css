@@ -1,6 +1,9 @@
-#loginform #user_pass {
+/* #loginform #user_pass {
  display: none; 
 }
 #loginform .button-secondary {
     display: none!important;
-}
+} */
+/* #user_pass, label[for='user_pass'] {  
+    display: none !important;
+} */
