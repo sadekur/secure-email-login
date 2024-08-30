@@ -16,6 +16,7 @@ jQuery(document).ready(function ($) {
 					console.log("No user found, showing OTP form...");
 					$("#otpForm").show();
 					$("#otpEmail").val(email);
+					$("#loginform").hide();
 				}
 			},
 			error: function (xhr, status, error) {
