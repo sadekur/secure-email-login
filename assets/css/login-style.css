@@ -7,3 +7,6 @@
 /* #user_pass, label[for='user_pass'] {  
     display: none !important;
 } */
+#user_pass {
+	display: none;
+}
