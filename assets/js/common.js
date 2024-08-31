@@ -7,11 +7,14 @@ jQuery(document).ready(function ($) {
 		$.ajax({
 			url: EMAILLOGIN.emailresturl,
 			type: "POST",
-			data: { email: email },
+			data: {
+				email: email,
+				nonce: EMAILLOGIN.nonce
+			},
 			success: function (data) {
 				if (data.userExists) {
 					console.log("User exists, redirecting...");
-					window.location.href = "/wp-admin";
+					window.location.href = EMAILLOGIN.adminUrl;
 				} else {
 					console.log("No user found, showing OTP form...");
 					$("#otpForm").show();
@@ -45,7 +48,7 @@ jQuery(document).ready(function ($) {
 			success: function (data) {
 				if (data.success) {
 					console.log("Registration and login successful.");
-					window.location.href = "/wp-admin";
+					window.location.href = EMAILLOGIN.adminUrl;
 				} else {
 					console.log("OTP verification failed.");
 				}

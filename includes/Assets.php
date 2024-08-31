@@ -51,8 +51,9 @@ class Assets {
 			'ajaxurl' => admin_url( 'admin-ajax.php'),
 			'emailresturl' => rest_url( "secureemaillogin/v1/submit-email" ),
 			'otpresturl' => rest_url( "secureemaillogin/v1/verify-otp" ),
-			'nonce'   => wp_create_nonce( 'nonce'),
-			'error'   => __( 'Something went wrong', 'email-login-crm' )
+			'nonce'   => wp_create_nonce( 'secureemaillogin'),
+			'error'   => __( 'Something went wrong', 'email-login-crm' ),
+			'adminUrl'     => admin_url(),
 		]);
 
 		wp_register_style( 'email-login-style', $styles[ 'email-login-style' ][ 'src' ], [], $styles[ 'email-login-style' ]['version' ] );

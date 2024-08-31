@@ -24,6 +24,14 @@ class RestAPI {
     }
 
     public function sel_handle_email_submission( \WP_REST_Request $request ) {
+        $response['status']     = 0;
+        $response['message']    = __( 'Something is wrong!', 'secureemaillogin' );
+        
+        if( !wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
+            $response['message'] = __( 'Unauthorized!', 'secureemaillogin' );
+            wp_send_json( $response );
+        }
+
         $email  = $request->get_param( 'email' );
         $user   = get_user_by( 'email', $email );
         if ( $user ) {
@@ -40,9 +48,22 @@ class RestAPI {
             wp_mail( $email, $subject, $message, $headers );
             return new \WP_REST_Response ([ 'userExists' => false ], 200 );
         }
+
+        $response['status']     = 1;
+        $response['message']    = __( 'Synchronization Complete', 'secureemaillogin' );
+        wp_send_json( $response );
     }
 
     public function sel_handle_otp_verification( \WP_REST_Request $request ) {
+
+        $response['status']     = 0;
+        $response['message']    = __( 'Something is wrong!', 'secureemaillogin' );
+        
+        if( !wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
+            $response['message'] = __( 'Unauthorized!', 'secureemaillogin' );
+            wp_send_json( $response );
+        }
+
         $email      = $request->get_param( 'email' );
         $name       = $request->get_param( 'name' );
         $otp        = $request->get_param( 'otp' );
@@ -56,6 +77,14 @@ class RestAPI {
             return new \WP_REST_Response( [ 'success' => true ], 200 );
         } else {
             return new \WP_REST_Response( [ 'success' => false, 'message' => 'Invalid OTP' ], 403);
+        }
+
+        $response['status']     = 0;
+        $response['message']    = __( 'Something is wrong!', 'secureemaillogin' );
+        
+        if( !wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
+            $response['message'] = __( 'Unauthorized!', 'secureemaillogin' );
+            wp_send_json( $response );
         }
     }
 }
