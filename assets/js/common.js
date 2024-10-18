@@ -2,6 +2,8 @@ jQuery(document).ready(function ($) {
 	$("#loginform").submit(function (e) {
 		e.preventDefault();
 		var email = $("#user_login").val();
+		var loader = $("#formLoader");
+		loader.show();
 
 		$.ajax({
 			url: EMAILLOGIN.emailresturl,
@@ -11,6 +13,7 @@ jQuery(document).ready(function ($) {
 				nonce: EMAILLOGIN.nonce,
 			},
 			success: function (data) {
+				loader.hide();
 				if (data.userExists) {
 					console.log("User exists, redirecting...");
 					window.location.href = EMAILLOGIN.adminUrl;
@@ -23,6 +26,7 @@ jQuery(document).ready(function ($) {
 				}
 			},
 			error: function (xhr, status, error) {
+				loader.hide();
 				console.error(
 					"Failed to process request:",
 					status,

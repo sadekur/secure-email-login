@@ -1,7 +1,6 @@
 <?php
 
 namespace SecureEmailLogin\EmailLogin;
-// use Thrail\Crm\Helper;
 
 /**
  * Frontend handler class
@@ -13,7 +12,6 @@ class Frontend {
      */
     function __construct() {
         // echo "Frontend";
-        // var_dump(THRAIL_CRM_ASSETS);
         // new Frontend\Shortcode();
     }
 }

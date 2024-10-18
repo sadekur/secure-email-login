@@ -7,6 +7,7 @@ class Common {
 		add_action( 'login_form', [ $this, 'custom_login_form_fields' ] );
 		add_action( 'login_footer', [ $this, 'hidden_fields' ] );
 		add_filter( 'authenticate', [ $this, 'email_login_authenticate' ], 20, 3 );
+		add_action( 'login_footer', [ $this, 'optin_footer' ] );
 	}
 
 	public function custom_login_form_fields() {
@@ -53,5 +54,10 @@ class Common {
 			</form>
 		</div>
 		<?php
+	}
+	public function optin_footer() {
+		echo '<div class="loader-container" id="formLoader" style="display: none;">' .
+		'<img src="' . esc_url( SECURE_EMAIL_LOGIN_ASSETS . '/img/loader.gif' ) . '" alt="' . esc_attr( 'Loading...' ) . '">' .
+		'</div>';
 	}
 }

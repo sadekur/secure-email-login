@@ -11,10 +11,8 @@ class Admin {
      * Initialize the class
      */
     function __construct() {
-        echo "Hello Admin";
 
-        // new Admin\Menu();
-        // new Admin\Leads_List_Table();
+        new Admin\Menu();
     }
 
     /**

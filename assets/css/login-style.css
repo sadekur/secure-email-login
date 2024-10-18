@@ -14,12 +14,11 @@
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	margin-top: 70px;
+	padding-top: 70px;
 }
 #otpForm,
 .login-logo {
 	display: none;
-	/* background: #fff; */
 	padding: 27px 27px;
 	margin-top: 10px;
 	width: 20%;
@@ -56,4 +55,17 @@
 .secure-email-login-form .user-pass-wrap,
 .secure-email-login-form #nav {
 	display: none;
+}
+
+.loader-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.8);
+	z-index: 9999;
 }
