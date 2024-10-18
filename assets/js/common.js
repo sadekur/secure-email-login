@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-	// Handle the email form submission
 	$("#loginform").submit(function (e) {
 		e.preventDefault();
 		var email = $("#user_login").val();
@@ -18,8 +17,9 @@ jQuery(document).ready(function ($) {
 				} else {
 					console.log("No user found, showing OTP form...");
 					$("#otpForm").show();
+					$(".login-logo").show();
 					$("#otpEmail").val(email);
-					$("#loginform").hide();
+					$(".secure-email-login-form").hide();
 				}
 			},
 			error: function (xhr, status, error) {
