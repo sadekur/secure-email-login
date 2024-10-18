@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
 			type: "POST",
 			data: {
 				email: email,
-				nonce: EMAILLOGIN.nonce
+				nonce: EMAILLOGIN.nonce,
 			},
 			success: function (data) {
 				if (data.userExists) {
@@ -43,18 +43,22 @@ jQuery(document).ready(function ($) {
 		$.ajax({
 			url: EMAILLOGIN.otpresturl,
 			type: "POST",
-			contentType: "application/json",
-			data: JSON.stringify({ email: email, name: name, otp: otp }),
+			data: {
+				email: email,
+				name: name,
+				otp: otp,
+				nonce: EMAILLOGIN.nonce,
+			},
 			success: function (data) {
 				if (data.success) {
-					console.log("Registration and login successful.");
+					console.log(data.success);
 					window.location.href = EMAILLOGIN.adminUrl;
 				} else {
-					console.log("OTP verification failed.");
+					console.log(data.message);
 				}
 			},
-			error: function () {
-				console.error("Failed to verify OTP.");
+			error: function (error) {
+				console.error(error);
 			},
 		});
 	});
