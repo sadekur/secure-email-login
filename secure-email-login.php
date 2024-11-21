@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:       Secure Email Login
- * Plugin URI:        https://wordpress.org/plugins/secure-email-login/
+ * Plugin URI:        https://github.com/sadekur/Secure-Email-Login
  * Description:       Secure Email Login is a plugin that allows users to log in using just their email without a password.
  * Version:           1.0.0
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Sadekur Rahman
- * Author URI:        sadekurrahmansoikut.com
+ * Author URI:        https://github.com/sadekur/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       secure-email-login
