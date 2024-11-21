@@ -1,7 +1,7 @@
 === Secure Email Login ===  
 Contributors        : rajd76816  
 Plugin URI          : https://profiles.wordpress.org/rajd76816/  
-Tags                : crm, email automation, lead management, wordpress plugin, email logs  
+Tags                : Passwordless Login, Email Authentication, OTP Login, Secure Login, WordPress Security, User Verification, Easy Login, Email OTP, Two-Factor Authentication, Login Security 
 Author URI          : https://profiles.wordpress.org/rajd76816/  
 Requires at least   : 5.0  
 Tested up to        : 6.6  
