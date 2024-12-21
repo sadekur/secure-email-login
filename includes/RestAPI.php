@@ -47,7 +47,7 @@ class RestAPI {
             return new \WP_REST_Response( [ 'userExists' => true ], 200 );
         } else {
             $otp = rand( 100000, 999999 );
-            set_transient( 'otp_' . $email, $otp, 10 * MINUTE_IN_SECONDS );
+            set_transient( 'secure_email_login_otp_' . $email, $otp, 10 * MINUTE_IN_SECONDS );
             $subject = __( 'Your Login OTP', 'secureemaillogin' );
             $message = sprintf( __( 'Here is your OTP for login: %s', 'secureemaillogin' ), $otp );
             $headers = [ 'Content-Type: text/html; charset=UTF-8' ];
@@ -80,13 +80,13 @@ class RestAPI {
             return new \WP_REST_Response( $response, 400 );
         }
 
-        $stored_otp = get_transient( 'otp_' . $email );
+        $stored_otp = get_transient( 'secure_email_login_otp_' . $email );
         if ( $otp == $stored_otp ) {
             $user_id = wp_create_user( $email, wp_generate_password(), $email );
             wp_update_user( [ 'ID' => $user_id, 'display_name' => $name ] );
             wp_set_current_user( $user_id );
             wp_set_auth_cookie( $user_id );
-            delete_transient( 'otp_' . $email );
+            delete_transient( 'secure_email_login_otp_' . $email );
             return new \WP_REST_Response( [ 'success' => true ], 200 );
         } else {
             return new \WP_REST_Response( [ 'success' => false, 'message' => 'Invalid OTP' ], 403);
