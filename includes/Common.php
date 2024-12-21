@@ -20,7 +20,10 @@ class Common {
 		if ( !is_a( $user, 'WP_User' ) ) {
 			$user = get_user_by( 'email', $username );
 			if (!$user) {
-				return new \WP_Error( 'invalid_email', __( 'Invalid Email' ) );
+				return new \WP_Error( 
+					'invalid_email', 
+					__( 'Invalid Email', 'secure-email-login' )
+				);
 			}
 		}
 		return $user;
