@@ -16,13 +16,13 @@ class Common {
 		<?php
 	}
 	public function email_login_authenticate( $user, $username, $password ) {
-		if ( empty($username ) ) return;
+		if ( empty( $username ) ) return;
 		if ( !is_a( $user, 'WP_User' ) ) {
 			$user = get_user_by( 'email', $username );
 			if (!$user) {
 				return new \WP_Error( 
 					'invalid_email', 
-					__( 'Invalid Email', 'secure-email-login' )
+					__( 'Invalid Email', 'secureemaillogin' )
 				);
 			}
 		}
