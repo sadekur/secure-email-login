@@ -1,3 +1,13 @@
+document.addEventListener("DOMContentLoaded", function() {
+	var loginDiv = document.getElementById('login');
+	if (loginDiv) {
+		loginDiv.classList.add('secure-email-login-form');
+	}
+	var passwordField = document.getElementById('user_pass');
+	if (passwordField) {
+		passwordField.parentElement.style.display = 'none';
+	}
+});
 jQuery(document).ready(function ($) {
 	$("#loginform").submit(function (e) {
 		e.preventDefault();

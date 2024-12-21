@@ -12,19 +12,7 @@ class Common {
 
 	public function custom_login_form_fields() {
 		?>
-		<script type="text/javascript">
-			document.addEventListener("DOMContentLoaded", function() {
-				var loginDiv = document.getElementById('login');
-				if (loginDiv) {
-					loginDiv.classList.add('secure-email-login-form');
-				}
-				var passwordField = document.getElementById('user_pass');
-				if (passwordField) {
-					passwordField.parentElement.style.display = 'none';
-				}
-			});
-		</script>
-		<input type="hidden" name="otp_login" value="1">
+			<input type="hidden" name="otp_login" value="1">
 		<?php
 	}
 	public function email_login_authenticate( $user, $username, $password ) {
