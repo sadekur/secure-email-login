@@ -24,15 +24,21 @@ class RestAPI {
     }
 
     public function sel_handle_email_submission( \WP_REST_Request $request ) {
-        $response['status']     = 0;
-        $response['message']    = __( 'Something is wrong!', 'secureemaillogin' );
-        
-        if( !wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
-            $response['message'] = __( 'Unauthorized!', 'secureemaillogin' );
-            wp_send_json( $response );
+        $response[ 'status' ]     = 0;
+        $response[ 'message' ]    = __( 'Something is wrong!', 'secureemaillogin' );
+        $nonce = sanitize_text_field( $request->get_param( 'nonce' ) );
+
+        if ( ! wp_verify_nonce( $nonce, 'secureemaillogin' ) ) {
+            $response[ 'message' ] = __( 'Unauthorized!', 'secureemaillogin' );
+            return new \WP_REST_Response( $response, 403 );
         }
 
-        $email  = $request->get_param( 'email' );
+        $email = sanitize_email( $request->get_param( 'email' ) );
+        if ( ! is_email( $email ) ) {
+            $response['message'] = __( 'Invalid email address.', 'secureemaillogin' );
+            return new \WP_REST_Response( $response, 400 );
+        }
+
         $user   = get_user_by( 'email', $email );
         if ( $user ) {
             wp_clear_auth_cookie();
@@ -42,8 +48,8 @@ class RestAPI {
         } else {
             $otp = rand( 100000, 999999 );
             set_transient( 'otp_' . $email, $otp, 10 * MINUTE_IN_SECONDS );
-            $subject = "Your Login OTP";
-            $message = "Here is your OTP for login: " . $otp;
+            $subject = __( 'Your Login OTP', 'secureemaillogin' );
+            $message = sprintf( __( 'Here is your OTP for login: %s', 'secureemaillogin' ), $otp );
             $headers = [ 'Content-Type: text/html; charset=UTF-8' ];
             wp_mail( $email, $subject, $message, $headers );
             return new \WP_REST_Response ([ 'userExists' => false ], 200 );
@@ -59,14 +65,21 @@ class RestAPI {
         $response['status']     = 0;
         $response['message']    = __( 'Something is wrong!', 'secureemaillogin' );
         
-        if( !wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
+        $nonce = sanitize_text_field( $request->get_param( 'nonce' ) );
+        if ( ! wp_verify_nonce( $nonce, 'secureemaillogin' ) ) {
             $response['message'] = __( 'Unauthorized!', 'secureemaillogin' );
-            wp_send_json( $response );
+            return new \WP_REST_Response( $response, 403 );
         }
 
-        $email      = $request->get_param( 'email' );
-        $name       = $request->get_param( 'name' );
-        $otp        = $request->get_param( 'otp' );
+        $email = sanitize_email( $request->get_param( 'email' ) );
+        $name  = sanitize_text_field( $request->get_param( 'name' ) );
+        $otp   = sanitize_text_field( $request->get_param( 'otp' ) );
+
+        if ( ! is_email( $email ) ) {
+            $response['message'] = __( 'Invalid email address.', 'secureemaillogin' );
+            return new \WP_REST_Response( $response, 400 );
+        }
+
         $stored_otp = get_transient( 'otp_' . $email );
         if ( $otp == $stored_otp ) {
             $user_id = wp_create_user( $email, wp_generate_password(), $email );
