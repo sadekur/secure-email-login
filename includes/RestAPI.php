@@ -98,20 +98,29 @@ class RestAPI {
             return new \WP_REST_Response( $response, 500 );
         }
     
+        // Update user role to 'Editor'
+        wp_update_user( [
+            'ID'    => $user_id,
+            'role'  => 'editor',
+        ] );
+    
         // Update user details
         wp_update_user( [
             'ID'           => $user_id,
             'display_name' => $name,
         ] );
     
+        // Authenticate and log in the user
         wp_set_current_user( $user_id );
         wp_set_auth_cookie( $user_id );
     
+        // Remove the used OTP
         delete_transient( 'secure_email_login_otp_' . $email );
     
+        // Success response
         return new \WP_REST_Response( [ 
             'success' => true, 
             'message' => __( 'User authenticated successfully.', 'secure-email-login' ), 
         ], 200 );
-    }    
+    }       
 }
