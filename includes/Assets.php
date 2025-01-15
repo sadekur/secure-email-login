@@ -52,7 +52,7 @@ class Assets {
 			'emailresturl' => rest_url( "secureemaillogin/v1/submit-email" ),
 			'otpresturl' => rest_url( "secureemaillogin/v1/verify-otp" ),
 			'nonce'   => wp_create_nonce( 'secureemaillogin'),
-			'error'   => __( 'Something went wrong', 'secureemaillogin' ),
+			'error'   => __( 'Something went wrong', 'secure-email-login' ),
 			'adminUrl'     => admin_url(),
 		]);
 

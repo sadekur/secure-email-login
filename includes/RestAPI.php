@@ -25,17 +25,17 @@ class RestAPI {
 
     public function sel_handle_email_submission( \WP_REST_Request $request ) {
         $response[ 'status' ]     = 0;
-        $response[ 'message' ]    = __( 'Something is wrong!', 'secureemaillogin' );
+        $response[ 'message' ]    = __( 'Something is wrong!', 'secure-email-login' );
         $nonce = sanitize_text_field( $request->get_param( 'nonce' ) );
 
         if ( ! wp_verify_nonce( $nonce, 'secureemaillogin' ) ) {
-            $response[ 'message' ] = __( 'Unauthorized!', 'secureemaillogin' );
+            $response[ 'message' ] = __( 'Unauthorized!', 'secure-email-login' );
             return new \WP_REST_Response( $response, 403 );
         }
 
         $email = sanitize_email( $request->get_param( 'email' ) );
         if ( ! is_email( $email ) ) {
-            $response['message'] = __( 'Invalid email address.', 'secureemaillogin' );
+            $response['message'] = __( 'Invalid email address.', 'secure-email-login' );
             return new \WP_REST_Response( $response, 400 );
         }
 
@@ -48,26 +48,26 @@ class RestAPI {
         } else {
             $otp = rand( 100000, 999999 );
             set_transient( 'secure_email_login_otp_' . $email, $otp, 10 * MINUTE_IN_SECONDS );
-            $subject = __( 'Your Login OTP', 'secureemaillogin' );
-            $message = sprintf( __( 'Here is your OTP for login: %s', 'secureemaillogin' ), $otp );
+            $subject = __( 'Your Login OTP', 'secure-email-login' );
+            $message = sprintf( __( 'Here is your OTP for login: %s', 'secure-email-login' ), $otp );
             $headers = [ 'Content-Type: text/html; charset=UTF-8' ];
             wp_mail( $email, $subject, $message, $headers );
             return new \WP_REST_Response ([ 'userExists' => false ], 200 );
         }
 
         $response['status']     = 1;
-        $response['message']    = __( 'Synchronization Complete', 'secureemaillogin' );
+        $response['message']    = __( 'Synchronization Complete', 'secure-email-login' );
         wp_send_json( $response );
     }
 
     public function sel_handle_otp_verification( \WP_REST_Request $request ) {
 
         $response['status']     = 0;
-        $response['message']    = __( 'Something is wrong!', 'secureemaillogin' );
+        $response['message']    = __( 'Something is wrong!', 'secure-email-login' );
         
         $nonce = sanitize_text_field( $request->get_param( 'nonce' ) );
         if ( ! wp_verify_nonce( $nonce, 'secureemaillogin' ) ) {
-            $response['message'] = __( 'Unauthorized!', 'secureemaillogin' );
+            $response['message'] = __( 'Unauthorized!', 'secure-email-login' );
             return new \WP_REST_Response( $response, 403 );
         }
 
@@ -76,7 +76,7 @@ class RestAPI {
         $otp   = sanitize_text_field( $request->get_param( 'otp' ) );
 
         if ( ! is_email( $email ) ) {
-            $response['message'] = __( 'Invalid email address.', 'secureemaillogin' );
+            $response['message'] = __( 'Invalid email address.', 'secure-email-login' );
             return new \WP_REST_Response( $response, 400 );
         }
 
@@ -93,10 +93,10 @@ class RestAPI {
         }
 
         $response['status']     = 0;
-        $response['message']    = __( 'Something is wrong!', 'secureemaillogin' );
+        $response['message']    = __( 'Something is wrong!', 'secure-email-login' );
         
-        if( !wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
-            $response['message'] = __( 'Unauthorized!', 'secureemaillogin' );
+        if( ! wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
+            $response['message'] = __( 'Unauthorized!', 'secure-email-login' );
             wp_send_json( $response );
         }
     }
