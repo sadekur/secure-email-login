@@ -61,43 +61,57 @@ class RestAPI {
     }
 
     public function sel_handle_otp_verification( \WP_REST_Request $request ) {
-
-        $response['status']     = 0;
-        $response['message']    = __( 'Something is wrong!', 'secure-email-login' );
-        
+        $response = [
+            'success' => false,
+            'message' => __( 'Something is wrong!', 'secure-email-login' ),
+        ];
+    
+        // Sanitize and validate the nonce
         $nonce = sanitize_text_field( $request->get_param( 'nonce' ) );
         if ( ! wp_verify_nonce( $nonce, 'secureemaillogin' ) ) {
             $response['message'] = __( 'Unauthorized!', 'secure-email-login' );
             return new \WP_REST_Response( $response, 403 );
         }
-
+    
+        // Sanitize and validate email
         $email = sanitize_email( $request->get_param( 'email' ) );
-        $name  = sanitize_text_field( $request->get_param( 'name' ) );
-        $otp   = sanitize_text_field( $request->get_param( 'otp' ) );
-
         if ( ! is_email( $email ) ) {
             $response['message'] = __( 'Invalid email address.', 'secure-email-login' );
             return new \WP_REST_Response( $response, 400 );
         }
-
+    
+        // Sanitize name and OTP
+        $name = sanitize_text_field( $request->get_param( 'name' ) );
+        $otp = sanitize_text_field( $request->get_param( 'otp' ) );
+    
+        // Validate OTP
         $stored_otp = get_transient( 'secure_email_login_otp_' . $email );
-        if ( $otp == $stored_otp ) {
-            $user_id = wp_create_user( $email, wp_generate_password(), $email );
-            wp_update_user( [ 'ID' => $user_id, 'display_name' => $name ] );
-            wp_set_current_user( $user_id );
-            wp_set_auth_cookie( $user_id );
-            delete_transient( 'secure_email_login_otp_' . $email );
-            return new \WP_REST_Response( [ 'success' => true ], 200 );
-        } else {
-            return new \WP_REST_Response( [ 'success' => false, 'message' => 'Invalid OTP' ], 403);
+        if ( $otp !== $stored_otp ) {
+            $response['message'] = __( 'Invalid OTP.', 'secure-email-login' );
+            return new \WP_REST_Response( $response, 403 );
         }
-
-        $response['status']     = 0;
-        $response['message']    = __( 'Something is wrong!', 'secure-email-login' );
-        
-        if( ! wp_verify_nonce( $_POST['nonce'], 'secureemaillogin' ) ) {
-            $response['message'] = __( 'Unauthorized!', 'secure-email-login' );
-            wp_send_json( $response );
+    
+        // Process user creation and authentication
+        $user_id = wp_create_user( $email, wp_generate_password(), $email );
+        if ( is_wp_error( $user_id ) ) {
+            $response['message'] = __( 'User creation failed.', 'secure-email-login' );
+            return new \WP_REST_Response( $response, 500 );
         }
-    }
+    
+        // Update user details
+        wp_update_user( [
+            'ID'           => $user_id,
+            'display_name' => $name,
+        ] );
+    
+        wp_set_current_user( $user_id );
+        wp_set_auth_cookie( $user_id );
+    
+        delete_transient( 'secure_email_login_otp_' . $email );
+    
+        return new \WP_REST_Response( [ 
+            'success' => true, 
+            'message' => __( 'User authenticated successfully.', 'secure-email-login' ), 
+        ], 200 );
+    }    
 }
