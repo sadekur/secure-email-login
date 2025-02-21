@@ -11,7 +11,9 @@ class RestAPI {
         register_rest_route('secureemaillogin/v1', '/submit-email', [
             'methods'               => 'POST',
             'callback'              => [$this, 'sel_handle_email_submission'],
-            'permission_callback'   => '__return_true',
+            'permission_callback'   => function() {
+                return !is_user_logged_in() || current_user_can( 'edit_posts' );
+            },
         ]);
     }
 
@@ -19,7 +21,9 @@ class RestAPI {
         register_rest_route('secureemaillogin/v1', '/verify-otp', [
             'methods'               => 'POST',
             'callback'              => [$this, 'sel_handle_otp_verification'],
-            'permission_callback'   => '__return_true',
+            'permission_callback'   => function() {
+                return !is_user_logged_in() || current_user_can( 'edit_posts' );
+            },
         ]);
     }
 
