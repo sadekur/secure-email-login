@@ -1,5 +1,5 @@
 {
-	"name": "secureemaillogin/email-login",
+	"name": "secure-email-login/email-login",
 	"description": "Secure Email Login is allows users to login using just their email without password.",
 	"type": "wordpress-plugin",
 	"license": "GPLv2",
