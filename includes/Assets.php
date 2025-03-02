@@ -48,12 +48,12 @@ class Assets {
 
 
 		wp_localize_script( 'email-common-script', 'EMAILLOGIN', [
-			'ajaxurl' => admin_url( 'admin-ajax.php'),
-			'emailresturl' => rest_url( "secureemaillogin/v1/submit-email" ),
-			'otpresturl' => rest_url( "secureemaillogin/v1/verify-otp" ),
-			'nonce'   => wp_create_nonce( 'secureemaillogin'),
-			'error'   => __( 'Something went wrong', 'secure-email-login' ),
-			'adminUrl'     => admin_url(),
+			'ajaxurl' 		=> admin_url( 'admin-ajax.php'),
+			'emailresturl' 	=> rest_url( "secureemaillogin/v1/submit-email" ),
+			'otpresturl' 	=> rest_url( "secureemaillogin/v1/verify-otp" ),
+			'nonce'  		=> wp_create_nonce( 'secureemaillogin'),
+			'error'   		=> __( 'Something went wrong', 'secure-email-login' ),
+			'adminUrl'     	=> admin_url(),
 		]);
 
 		wp_register_style( 'email-login-style', $styles[ 'email-login-style' ][ 'src' ], [], $styles[ 'email-login-style' ]['version' ] );
