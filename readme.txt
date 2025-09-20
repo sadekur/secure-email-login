@@ -4,7 +4,7 @@ Plugin URI          : https://profiles.wordpress.org/rajd76816/
 Tags                : passwordless login, email authentication, OTP login, secure login, wordPress security, user verification, easy login, email OTP, two-factor authentication, login security 
 Author URI          : https://profiles.wordpress.org/rajd76816/  
 Requires at least   : 5.0  
-Tested up to        : 6.7  
+Tested up to        : 6.8 
 Stable Tag          : 1.0.0  
 Requires PHP        : 7.2  
 License             : GPLv2 or later  
