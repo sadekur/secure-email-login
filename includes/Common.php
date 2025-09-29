@@ -22,7 +22,7 @@ class Common {
 			if (!$user) {
 				return new \WP_Error( 
 					'invalid_email', 
-					__( 'Invalid Email', 'secureemaillogin' )
+					__( 'Invalid Email', 'secure-email-login' )
 				);
 			}
 		}
