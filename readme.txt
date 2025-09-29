@@ -1,96 +1,122 @@
-=== Secure Email Login ===  
-Contributors        : rajd76816  
-Plugin URI          : https://profiles.wordpress.org/rajd76816/  
-Tags                : passwordless login, email authentication, OTP login, secure login, wordPress security, user verification, easy login, email OTP, two-factor authentication, login security 
-Author URI          : https://profiles.wordpress.org/rajd76816/  
-Requires at least   : 5.0  
-Tested up to        : 6.8 
-Stable Tag          : 1.0.0  
-Requires PHP        : 7.2  
-License             : GPLv2 or later  
-License URI         : https://www.gnu.org/licenses/gpl-2.0.html  
+=== Secure Email Login ===
+Contributors        : sadekur
+Plugin URI          : [https://profiles.wordpress.org/sadekur/](https://profiles.wordpress.org/sadekur/)
+Tags                : passwordless login, email authentication, OTP login, secure login, WordPress security, user verification, easy login, email OTP, two-factor authentication, login security
+Author URI          : [https://profiles.wordpress.org/sadekur/](https://profiles.wordpress.org/sadekur/)
+Requires at least   : 5.0
+Tested up to        : 6.8
+Stable Tag          : 1.0.0
+Requires PHP        : 7.2
+License             : GPLv2 or later
+License URI         : [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)
 
-== Secure Email Login ==  
-A powerful and easy-to-use WordPress CRM plugin for lead management, email automation, and much more!  
+== Secure Email Login ==
 
-== Description ==  
-**Secure Email Login** Secure Email Login transforms the traditional WordPress login experience by enabling passwordless authentication. This innovative plugin allows existing users to log in using just their email address. New users can also register seamlessly through a secure, OTP-based process. Upon entering their email, they receive a One-Time Password (OTP) with a 10-minute validity. A user-friendly interface prompts them to enter their name (optional) and the received OTP to complete the registration or login process.  
+== Description ==
+**Secure Email Login** is a passwordless login solution for WordPress. With this plugin, users can securely log in or register using only their email address and a one-time password (OTP).
 
-> **Note**: This plugin requires PHP 7.2 or higher.  
+If a user already has an account, they are securely logged in using their email and redirected to their dashboard.
 
-### Key Features:  
-- **Passwordless Login**: Users can log in using only their email, eliminating the need to remember passwords.  
-- **OTP Verification**: Enhances security by verifying user identity with a time-limited OTP sent via email.  
-- **Auto Registration**: New users can register on-the-fly during their first login attempt, with no need for a pre-registration process.  
-- **User-Friendly Interface**: Provides a streamlined login experience with minimal user input required.  
-- **Enhanced Security**: Reduces the risk of password theft and enhances user authentication security. 
+If a new user provides a valid email that does not exist in the system, the plugin prompts them to enter their **email, username, and OTP**. Once verified, their account is created instantly and they are logged in.
 
-### Video Tutorial:  
-Learn how to set up and use Secure Email Login by watching our step-by-step [video tutorial](https://wordpress.org/plugins/secure-email-login/#tutorial).  
+The OTP is valid for 10 minutes, ensuring both convenience and strong security.
 
-You can also leave a positive review on [WordPress.org](https://wordpress.org/plugins/secure-email-login/#reviews)!  
+> **Note**: This plugin requires PHP 7.2 or higher.
+
+### Key Features
+
+* **Passwordless Login**: Users log in without needing a password, just their email.
+* **OTP-Based Authentication**: One-Time Passwords (OTP) are sent to the user’s email and are valid for 10 minutes.
+* **Auto User Registration**: New users can create an account simply by entering their email, username, and OTP—no extra steps required.
+* **Secure and Reliable**: Eliminates the risks of stolen or weak passwords by replacing them with a temporary OTP.
+* **Streamlined User Experience**: Fast, simple, and user-friendly login and registration flow.
+* **Automatic Dashboard Redirect**: Users are redirected to their WordPress dashboard after login or registration.
+
+### Video Tutorial
+
+Learn how to set up and use Secure Email Login by watching our step-by-step [video tutorial](https://wordpress.org/plugins/secure-email-login/#tutorial).
+
+If you like the plugin, please leave a positive review on [WordPress.org](https://wordpress.org/plugins/secure-email-login/#reviews)!
 
 ---
 
-### Why Choose Secure Email Login?  
-- Eliminates Password Hassles: Forget about managing complex passwords or dealing with password resets. Secure Email Login removes the barriers to entry by using a simple yet secure email-based login process.
-- Enhanced Security and Privacy: By using OTPs, Secure Email Login minimizes the risk of password theft and unauthorized access. Each OTP is uniquely generated and valid for only 10 minutes, ensuring that only the intended user can log in during that window. 
-- Streamlined User Experience: Users appreciate ease and efficiency. Secure Email Login reduces the friction of traditional login methods by providing a smooth, two-step process that quickly authenticates users without the need for passwords.
-- Increased User Registration: The quick and easy registration process encourages new users to sign up without the typical resistance of filling out long forms. This can lead to higher conversion rates and increased user engagement.
-- Lower Support Overhead: Reducing dependency on passwords decreases the number of support requests related to login issues like forgotten passwords and account lockouts. This can significantly lower support costs and reduce administrative overhead.
-- Future-Proof Technology: As the digital landscape evolves towards more secure and user-friendly authentication methods, Secure Email Login ensures your site remains ahead of the curve by adopting these advanced security practices now.
+### Why Choose Secure Email Login?
+
+* **No More Passwords**: No need to remember or reset passwords.
+* **Stronger Security**: OTPs reduce the risk of brute force and credential theft.
+* **Faster Registration**: New users can create an account in seconds.
+* **Better User Experience**: Clean, modern login flow with minimal fields.
+* **Lower Support Requests**: Fewer “forgot password” issues to handle.
+* **Future-Proof**: Stay ahead with secure, passwordless authentication.
 
 == Installation ==
-Automatic Installation:
 
-Go to your WordPress dashboard, navigate to the 'Plugins' section.
-Click 'Add New' and search for 'Secure Email Login'.
-Click 'Install Now' and then activate the plugin.
-Manual Installation:
+**Automatic Installation**
 
-Download the plugin from WordPress.org.
-Upload the 'secure-email-login' folder to your '/wp-content/plugins/' directory.
-Activate the plugin through the 'Plugins' menu in WordPress.
+1. Go to your WordPress dashboard, navigate to the **Plugins** section.
+2. Click **Add New** and search for **Secure Email Login**.
+3. Click **Install Now** and then **Activate** the plugin.
+
+**Manual Installation**
+
+1. Download the plugin from WordPress.org.
+2. Upload the `secure-email-login` folder to your `/wp-content/plugins/` directory.
+3. Activate the plugin through the **Plugins** menu in WordPress.
 
 ---
 
 == Usage ==
-Navigate to the WordPress login page; you will see an updated login interface.
-Existing users can enter their email to receive an OTP for login.
-New users enter their email and receive an OTP along with fields to enter their name and complete registration.
+
+1. Navigate to the WordPress login page.
+2. Enter your email address.
+
+   * If you already have an account, simply enter your email to log in.
+   * If you are a new user, provide your email, username, and OTP to create an account and log in.
+3. After entering the valid OTP, you’ll be redirected to your WordPress dashboard.
 
 ---
 
 == Frequently Asked Questions ==
-Q: What is OTP? A: OTP stands for One-Time Password, a secure code that is valid for only 10 minutes used for verifying user identity.
 
-Q: Can I customize the email template for the OTP? A: Yes, you can customize it from the plugin settings page to match your branding.
+**Q: What is OTP?**
+A: OTP stands for One-Time Password, a unique code valid for 10 minutes that verifies user identity.
 
-Q: What happens if the OTP expires? A: Users can simply re-enter their email to receive a new OTP.
+**Q: Can I customize the OTP email template?**
+A: Yes, the email template can be customized in the plugin settings page.
+
+**Q: What happens if the OTP expires?**
+A: The user can simply re-enter their email to generate a new OTP.
+
+**Q: Does this work with all WordPress user roles?**
+A: Yes, all roles can log in or register using this method.
 
 ---
 
 == Screenshots ==
 
-The updated login screen with email field.
-OTP input screen for secure login.
-Admin settings page for customizing email templates.
+1. Updated login screen with email field.
+2. OTP input and new user registration form.
+3. Admin settings page for customizing OTP email templates.
+
+---
 
 == Changelog ==
 
-1.0.0
+= 1.0.0 =
 
-Initial release with email login and OTP verification functionalities.
+* Initial release with passwordless email login, OTP verification, and auto-registration.
+
+---
 
 == Upgrade Notice ==
 
-1.0.1
+= 1.0.1 =
 
-Minor bug fixes and performance improvements. Make sure to update for the best experience.
+* Minor bug fixes and performance improvements. Update recommended for best experience.
+
+---
 
 == License ==
+This plugin is released under the GPL license. You are free to use and modify it.
 
-This plugin is released under the GPL license. Feel free to use it on your website or modify it as you need.
-
-For questions or support, contact us at [shadekur.rahman60@gmail.com](mailto:shadekur.rahman60@gmail.com).  
-
+For support, contact: [sadekur0rahman@gmail.com](mailto:sadekur0rahman@gmail.com).
