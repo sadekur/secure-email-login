@@ -105,7 +105,7 @@ class RestAPI {
         // Update user role to 'Editor'
         wp_update_user( [
             'ID'    => $user_id,
-            'role'  => 'editor',
+            'role'  => 'customer',
         ] );
     
         // Update user details
