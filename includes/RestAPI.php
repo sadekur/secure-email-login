@@ -10,7 +10,7 @@ class RestAPI {
     public function register_email_login() {
         register_rest_route('secureemaillogin/v1', '/submit-email', [
             'methods'               => 'POST',
-            'callback'              => [$this, 'sel_handle_email_submission'],
+            'callback'              => [$this, 'handle_email_submission'],
             'permission_callback'   => function() {
                 return !is_user_logged_in() || current_user_can( 'edit_posts' );
             },
@@ -20,7 +20,7 @@ class RestAPI {
     public function email_verification() {
         register_rest_route('secureemaillogin/v1', '/verify-otp', [
             'methods'               => 'POST',
-            'callback'              => [$this, 'sel_handle_otp_verification'],
+            'callback'              => [$this, 'handle_otp_verification'],
             'permission_callback'   => function() {
                 return !is_user_logged_in() || current_user_can( 'edit_posts' );
             },
@@ -38,7 +38,7 @@ class RestAPI {
     /**
      * Submit email: always send OTP (do NOT log user in here).
      */
-    public function sel_handle_email_submission( \WP_REST_Request $request ) {
+    public function handle_email_submission( \WP_REST_Request $request ) {
         $response = [
             'status'  => 0,
             'message' => __( 'Something is wrong!', 'secure-email-login' ),
@@ -87,7 +87,7 @@ class RestAPI {
         ], 200 );
     }
 
-    public function sel_handle_otp_verification( \WP_REST_Request $request ) {
+    public function handle_otp_verification( \WP_REST_Request $request ) {
         $response = [
             'success' => false,
             'message' => __( 'Something is wrong!', 'secure-email-login' ),
