@@ -1,6 +1,6 @@
 <?php
 
-namespace SecureEmailLogin\EmailLogin;
+namespace PasswordLess\Login;
 
 /**
  * The admin class

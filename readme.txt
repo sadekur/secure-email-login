@@ -1,19 +1,19 @@
-=== Pssword Less Login (Secure Email Login) ===
+=== Password Less Login ===
 Contributors: sadekur
 Plugin URI: https://profiles.wordpress.org/sadekur/
-Tags: passwordless login, email authentication, OTP login, secure login, WordPress security, user verification, easy login, email OTP, two-factor authentication, login security
+Tags: passwordless login, email authentication, OTP login, secure login, easy login
 Author URI: https://profiles.wordpress.org/sadekur/
-Requires at least: 5.0
+Requires at least: 5.9
 Tested up to: 6.8
-Stable tag: 1.0.1
-Requires PHP: 7.2
+Stable tag: 1.0.0
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-== Pssword Less Login (Secure Email Login) ==
+A powerful and easy-to-use WordPress plugin for passwordless and OTP-based login.
 
 == Description ==
-**Pssword Less Login (Secure Email Login)** is a passwordless and OTP-based login system for WordPress.  
+**Password Less Login** is a passwordless and OTP-based login system for WordPress.  
 Every user — both existing and new — must verify their identity using a **One-Time Password (OTP)** sent to their email before being logged in.
 
 This ensures that no one can access an account without confirming ownership of the email address, providing a secure, passwordless authentication process.
@@ -43,7 +43,7 @@ This ensures that no one can access an account without confirming ownership of t
 
 ---
 
-### Why Choose Pssword Less Login (Secure Email Login)?
+### Why Choose Password Less Login?
 
 * No passwords to remember or reset.
 * OTP verification ensures true ownership of email.
@@ -59,13 +59,13 @@ This ensures that no one can access an account without confirming ownership of t
 **Automatic Installation**
 
 1. Go to your WordPress dashboard → **Plugins → Add New**.
-2. Search for **Pssword Less Login (Secure Email Login)**.
+2. Search for **Password Less Login**.
 3. Click **Install Now** and then **Activate**.
 
 **Manual Installation**
 
 1. Download the plugin from WordPress.org.
-2. Upload the `secure-email-login` folder to `/wp-content/plugins/`.
+2. Upload the `password-less-login` folder to `/wp-content/plugins/`.
 3. Activate the plugin through the **Plugins** menu.
 
 ---

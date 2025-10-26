@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 	var loginDiv = document.getElementById('login');
 	if (loginDiv) {
-		loginDiv.classList.add('secure-email-login-form');
+		loginDiv.classList.add('password-less-login-form');
 	}
 	var passwordField = document.getElementById('user_pass');
 	if (passwordField) {
@@ -32,7 +32,7 @@ jQuery(document).ready(function ($) {
 				$("#otpForm").show();
 				$(".login-logo").show();
 				$("#otpEmail").val(email);
-				$(".secure-email-login-form").hide();
+				$(".password-less-login-form").hide();
 
 				if (data.userExists) {
 					$("#otpForm").find("input[name='otp']").attr("placeholder", "Enter OTP to sign in");

@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:       Pssword Less Login (Secure Email Login)
+ * Plugin Name:       Password Less Login
  * Plugin URI:        https://github.com/sadekur/password-less-login
- * Description:       Secure Email Login is a plugin that allows users to log in using just their email without a password.
+ * Description:       This is a plugin that allows users to log in using just their email without a password.
  * Version:           1.0.0
  * Requires at least: 5.9
  * Requires PHP:      7.4
@@ -10,7 +10,7 @@
  * Author URI:        https://github.com/sadekur/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       secure-email-login
+ * Text Domain:       password-less-login
  *
  */
 
@@ -23,7 +23,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * The main plugin class
  */
-final class Secure_Email_Login {
+final class Password_Less_Login {
 
 	/**
 	 * Plugin version
@@ -43,7 +43,7 @@ final class Secure_Email_Login {
 	/**
 	 * Singleton instance
 	 *
-	 * @return Secure_Email_Login
+	 * @return Password_Less_Login
 	 */
 	public static function init() {
 		static $instance = false;
@@ -74,24 +74,24 @@ final class Secure_Email_Login {
 	 * @return void
 	 */
 	public function init_plugin() {
-		new SecureEmailLogin\EmailLogin\Assets();
-		new SecureEmailLogin\EmailLogin\Common();
-		new SecureEmailLogin\EmailLogin\RestAPI();
+		new PasswordLess\Login\Assets();
+		new PasswordLess\Login\Common();
+		new PasswordLess\Login\RestAPI();
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			new SecureEmailLogin\EmailLogin\Ajax();
+			// new PasswordLess\Login\Ajax();
 		}
 
 		if ( is_admin() ) {
-			new SecureEmailLogin\EmailLogin\Admin();
+			new PasswordLess\Login\Admin();
 		} else {
-			new SecureEmailLogin\EmailLogin\Frontend();
+			new PasswordLess\Login\Frontend();
 		}
 	}
 }
 
-function secure_email_login() {
-	return Secure_Email_Login::init();
+function password_less_login() {
+	return Password_Less_Login::init();
 }
 
-secure_email_login();
+password_less_login();

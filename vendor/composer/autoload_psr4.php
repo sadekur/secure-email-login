@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'SecureEmailLogin\\EmailLogin\\' => array($baseDir . '/includes'),
+    'PasswordLess\\Login\\' => array($baseDir . '/includes'),
 );

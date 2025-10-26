@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => 'secure-email-login/email-login',
+        'name' => 'password-less-login/login',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b51b6b6dfac1fc6d728e8b7528c8c22d3c093367',
+        'reference' => '36f78bce2cba616c05b83a4b20e42cc2d2ea0199',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'secure-email-login/email-login' => array(
+        'password-less-login/login' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b51b6b6dfac1fc6d728e8b7528c8c22d3c093367',
+            'reference' => '36f78bce2cba616c05b83a4b20e42cc2d2ea0199',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

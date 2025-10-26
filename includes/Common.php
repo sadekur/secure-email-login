@@ -1,6 +1,6 @@
 <?php
 
-namespace SecureEmailLogin\EmailLogin;
+namespace PasswordLess\Login;
 
 class Common {
 	function __construct() {
@@ -22,7 +22,7 @@ class Common {
 			if (!$user) {
 				return new \WP_Error( 
 					'invalid_email', 
-					__( 'Invalid Email', 'secure-email-login' )
+					__( 'Invalid Email', 'password-less-login' )
 				);
 			}
 		}
@@ -31,7 +31,7 @@ class Common {
 
 	public function hidden_fields() {
 		?>
-		<div class="secure-email-login-hidden-form">
+		<div class="password-less-login-hidden-form">
 			<div class="login-logo">
 				<a href="https://wordpress.org/" tabindex="-1">
 					<img src="<?php echo esc_url( includes_url( 'images/w-logo-blue.png' ) ); ?>" alt="WordPress">

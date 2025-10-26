@@ -8,7 +8,7 @@
     display: none !important;
 } */
 
-.secure-email-login-hidden-form {
+.password-less-login-hidden-form {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -52,8 +52,8 @@
 #otpForm button:hover {
 	background: #0091cd;
 }
-.secure-email-login-form .user-pass-wrap,
-.secure-email-login-form #nav {
+.password-less-login-form .user-pass-wrap,
+.password-less-login-form #nav {
 	display: none;
 }
 

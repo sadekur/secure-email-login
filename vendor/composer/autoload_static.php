@@ -7,18 +7,18 @@ namespace Composer\Autoload;
 class ComposerStaticInit8a15602b5ea7d4fb36ab7178c99f3135
 {
     public static $files = array (
-        '1185bd2a75c4ac9d192b3283f389ab10' => __DIR__ . '/../..' . '/includes/functions.php',
+        '343fdea5b27136d4b028fa3325ae84f5' => __DIR__ . '/../..' . '/includes/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'S' => 
+        'P' => 
         array (
-            'SecureEmailLogin\\EmailLogin\\' => 28,
+            'PasswordLess\\Login\\' => 19,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'SecureEmailLogin\\EmailLogin\\' => 
+        'PasswordLess\\Login\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
         ),

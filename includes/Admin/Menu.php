@@ -1,6 +1,6 @@
 <?php
 
-namespace SecureEmailLogin\EmailLogin\Admin;
+namespace PasswordLess\Login\Admin;
 
 class Menu {
 
