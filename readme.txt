@@ -1,4 +1,4 @@
-=== Secure Email Login ===
+=== Pssword Less Login (Secure Email Login) ===
 Contributors: sadekur
 Plugin URI: https://profiles.wordpress.org/sadekur/
 Tags: passwordless login, email authentication, OTP login, secure login, WordPress security, user verification, easy login, email OTP, two-factor authentication, login security
@@ -10,10 +10,10 @@ Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-== Secure Email Login ==
+== Pssword Less Login (Secure Email Login) ==
 
 == Description ==
-**Secure Email Login** is a passwordless and OTP-based login system for WordPress.  
+**Pssword Less Login (Secure Email Login)** is a passwordless and OTP-based login system for WordPress.  
 Every user — both existing and new — must verify their identity using a **One-Time Password (OTP)** sent to their email before being logged in.
 
 This ensures that no one can access an account without confirming ownership of the email address, providing a secure, passwordless authentication process.
@@ -43,7 +43,7 @@ This ensures that no one can access an account without confirming ownership of t
 
 ---
 
-### Why Choose Secure Email Login?
+### Why Choose Pssword Less Login (Secure Email Login)?
 
 * No passwords to remember or reset.
 * OTP verification ensures true ownership of email.
@@ -59,7 +59,7 @@ This ensures that no one can access an account without confirming ownership of t
 **Automatic Installation**
 
 1. Go to your WordPress dashboard → **Plugins → Add New**.
-2. Search for **Secure Email Login**.
+2. Search for **Pssword Less Login (Secure Email Login)**.
 3. Click **Install Now** and then **Activate**.
 
 **Manual Installation**

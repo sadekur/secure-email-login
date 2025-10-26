@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       Secure Email Login
- * Plugin URI:        https://github.com/sadekur/Secure-Email-Login
+ * Plugin Name:       Pssword Less Login (Secure Email Login)
+ * Plugin URI:        https://github.com/sadekur/password-less-login
  * Description:       Secure Email Login is a plugin that allows users to log in using just their email without a password.
  * Version:           1.0.0
  * Requires at least: 5.9
