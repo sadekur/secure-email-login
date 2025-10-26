@@ -116,16 +116,12 @@ class RestAPI {
             return new \WP_REST_Response( $response, 403 );
         }
 
-        // OTP is valid — consume it immediately
         delete_transient( $otp_key );
-
-        // Reset attempt counters on success
         delete_transient( sel_otp_attempts_key( $email ) );
         delete_transient( $attempts_key );
 
         $user = get_user_by( 'email', $email );
         if ( $user ) {
-            // Existing user: authenticate
             wp_clear_auth_cookie();
             wp_set_current_user( $user->ID );
             wp_set_auth_cookie( $user->ID );
@@ -137,8 +133,6 @@ class RestAPI {
             ], 200 );
         }
 
-        // New user: create an account
-        // Derive a safe user_login from name or email localpart
         $username_base = sanitize_user( ( $name ? $name : current( explode( '@', $email, 2 ) ) ), true );
         if ( empty( $username_base ) ) {
             $username_base = 'user_' . wp_generate_password( 6, false );
@@ -156,8 +150,6 @@ class RestAPI {
             $response['message'] = __( 'User creation failed.', 'secure-email-login' );
             return new \WP_REST_Response( $response, 500 );
         }
-
-        // Set role (use 'subscriber' as safe default; change as needed)
         wp_update_user( [
             'ID'           => $user_id,
             'role'         => 'subscriber',
