@@ -25,14 +25,19 @@ jQuery(document).ready(function ($) {
 			success: function (data) {
 				loader.hide();
 				if (data.userExists) {
-					console.log("User exists, redirecting...");
-					window.location.href = EMAILLOGIN.adminUrl;
+					$("#otpName").hide();
 				} else {
-					console.log("No user found, showing OTP form...");
-					$("#otpForm").show();
-					$(".login-logo").show();
-					$("#otpEmail").val(email);
-					$(".secure-email-login-form").hide();
+					$("#otpName").show();
+				}
+				$("#otpForm").show();
+				$(".login-logo").show();
+				$("#otpEmail").val(email);
+				$(".secure-email-login-form").hide();
+
+				if (data.userExists) {
+					$("#otpForm").find("input[name='otp']").attr("placeholder", "Enter OTP to sign in");
+				} else {
+					$("#otpForm").find("input[name='otp']").attr("placeholder", "Enter OTP to create account");
 				}
 			},
 			error: function (xhr, status, error) {
@@ -65,7 +70,6 @@ jQuery(document).ready(function ($) {
 			},
 			success: function (data) {
 				if (data.success) {
-					console.log(data.success);
 					window.location.href = EMAILLOGIN.adminUrl;
 				} else {
 					console.log(data.message);
