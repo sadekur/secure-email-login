@@ -8,7 +8,7 @@ class RestAPI {
     }
 
     public function register_email_login() {
-        register_rest_route('secureemaillogin/v1', '/submit-email', [
+        register_rest_route('password-less-login/v1', '/submit-email', [
             'methods'               => 'POST',
             'callback'              => [$this, 'handle_email_submission'],
             'permission_callback'   => function() {
@@ -18,7 +18,7 @@ class RestAPI {
     }
 
     public function email_verification() {
-        register_rest_route('secureemaillogin/v1', '/verify-otp', [
+        register_rest_route('password-less-login/v1', '/verify-otp', [
             'methods'               => 'POST',
             'callback'              => [$this, 'handle_otp_verification'],
             'permission_callback'   => function() {
@@ -37,7 +37,7 @@ class RestAPI {
         ];
 
         $nonce = sanitize_text_field( $request->get_param( 'nonce' ) );
-        if ( ! wp_verify_nonce( $nonce, 'secureemaillogin' ) ) {
+        if ( ! wp_verify_nonce( $nonce, 'password-less-login' ) ) {
             $response['message'] = __( 'Unauthorized!', 'password-less-login' );
             return new \WP_REST_Response( $response, 403 );
         }
@@ -49,7 +49,7 @@ class RestAPI {
         }
 
         // Throttle OTP requests per email (5 per 15 minutes)
-        $attempts_key = sel_otp_attempts_key( $email );
+        $attempts_key = pll_otp_attempts_key( $email );
         $attempts     = (int) get_transient( $attempts_key );
         if ( $attempts >= 5 ) {
             $response['message'] = __( 'Too many requests. Please try again later.', 'password-less-login' );
@@ -62,7 +62,7 @@ class RestAPI {
 
         // Generate OTP (6-digit) and store it transiently (10 minutes)
         $otp     = (string) wp_rand( 100000, 999999 );
-        $otp_key = sel_otp_transient_key( $email );
+        $otp_key = pll_otp_transient_key( $email );
 
         set_transient( $otp_key, $otp, 10 * MINUTE_IN_SECONDS );
 
@@ -94,7 +94,7 @@ class RestAPI {
         ];
 
         $nonce = sanitize_text_field( $request->get_param( 'nonce' ) );
-        if ( ! wp_verify_nonce( $nonce, 'secureemaillogin' ) ) {
+        if ( ! wp_verify_nonce( $nonce, 'password-less-login' ) ) {
             $response['message'] = __( 'Unauthorized!', 'password-less-login' );
             return new \WP_REST_Response( $response, 403 );
         }
@@ -108,7 +108,7 @@ class RestAPI {
         $otp = sanitize_text_field( $request->get_param( 'otp' ) );
         $name = sanitize_text_field( $request->get_param( 'name' ) );
 
-        $attempts_key = sel_otp_attempts_key( $email ) . '_verify';
+        $attempts_key = pll_otp_attempts_key( $email ) . '_verify';
         $attempts = (int) get_transient( $attempts_key );
         if ( $attempts >= 5 ) {
             $response['message'] = __( 'Too many verification attempts. Try again later.', 'password-less-login' );
@@ -116,7 +116,7 @@ class RestAPI {
         }
         set_transient( $attempts_key, $attempts + 1, 15 * MINUTE_IN_SECONDS );
 
-        $otp_key = sel_otp_transient_key( $email );
+        $otp_key = pll_otp_transient_key( $email );
         $stored_otp = get_transient( $otp_key );
 
         if ( empty( $stored_otp ) || (string) $stored_otp !== (string) $otp ) {
@@ -125,7 +125,7 @@ class RestAPI {
         }
 
         delete_transient( $otp_key );
-        delete_transient( sel_otp_attempts_key( $email ) );
+        delete_transient( pll_otp_attempts_key( $email ) );
         delete_transient( $attempts_key );
 
         $user = get_user_by( 'email', $email );

@@ -16,11 +16,11 @@ jQuery(document).ready(function ($) {
 		loader.show();
 
 		$.ajax({
-			url: EMAILLOGIN.emailresturl,
+			url: PASSWORDLESSLOGIN.pastemailresturl,
 			type: "POST",
 			data: {
 				email: email,
-				nonce: EMAILLOGIN.nonce,
+				nonce: PASSWORDLESSLOGIN.nonce,
 			},
 			success: function (data) {
 				loader.hide();
@@ -60,17 +60,17 @@ jQuery(document).ready(function ($) {
 		var otp = $("#otp").val();
 
 		$.ajax({
-			url: EMAILLOGIN.otpresturl,
+			url: PASSWORDLESSLOGIN.otpresturl,
 			type: "POST",
 			data: {
 				email: email,
 				name: name,
 				otp: otp,
-				nonce: EMAILLOGIN.nonce,
+				nonce: PASSWORDLESSLOGIN.nonce,
 			},
 			success: function (data) {
 				if (data.success) {
-					window.location.href = EMAILLOGIN.adminUrl;
+					window.location.href = PASSWORDLESSLOGIN.adminUrl;
 				} else {
 					console.log(data.message);
 				}
