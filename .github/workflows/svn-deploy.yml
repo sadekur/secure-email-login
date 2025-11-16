@@ -1,157 +1,78 @@
-name: Deploy and Release Plugin to WP.org
+name: Deploy Password Less Login to WordPress SVN
 
 on:
   push:
     tags:
-      - "*"
-
-permissions:
-  contents: write # needed to create GitHub release
-
-concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: false
+      - "v*"  # Runs when a tag like v1.0.0 is pushed
 
 jobs:
-  releaseToWPOrg:
-    name: Release
+  deploy:
+    name: Deploy to WordPress SVN
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      # Step 1: Checkout the Git repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set plugin name
-        id: plugin_name
-        run: |
-          PLUGIN_SLUG="${{ github.event.repository.name }}"
-          PLUGIN_FILE="${PLUGIN_SLUG}.php"
-          # Convert kebab-case to Title Case for display
-          PLUGIN_NAME=$(echo "$PLUGIN_SLUG" | sed 's/-/ /g' | sed 's/\b\w/\U&/g')
-          echo "plugin_slug=$PLUGIN_SLUG" >> $GITHUB_OUTPUT
-          echo "plugin_file=$PLUGIN_FILE" >> $GITHUB_OUTPUT
-           echo "plugin_name=$PLUGIN_NAME" >> $GITHUB_OUTPUT
+      # Step 2: Install Composer dependencies to regenerate `vendor/`
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader -n
 
-      - name: Validate tag and plugin version alignment
-        id: version_check
-        run: |
-          TAG_REF="${GITHUB_REF#refs/tags/}"
-          # Strip leading v if present
-          if [[ "$TAG_REF" =~ ^v ]]; then TAG_STRIPPED=${TAG_REF#v}; else TAG_STRIPPED=$TAG_REF; fi
-          # Extract Version from plugin header (first match)
-          PLUGIN_VERSION=$(grep -E "^[[:space:]]*\*[[:space:]]*Version:" ${{ steps.plugin_name.outputs.plugin_file }} | head -n1 | sed -E 's/.*Version:[[:space:]]*([^ ]+).*/\1/')
-          echo "Tag: $TAG_REF";
-          echo "Stripped Tag: $TAG_STRIPPED";
-          echo "Plugin Version: $PLUGIN_VERSION";
-          if [ -z "$PLUGIN_VERSION" ]; then echo "Could not determine plugin version from ${{ steps.plugin_name.outputs.plugin_file }}"; exit 1; fi
-          if [ "$PLUGIN_VERSION" != "$TAG_STRIPPED" ]; then echo "Version mismatch: tag ($TAG_STRIPPED) != plugin header ($PLUGIN_VERSION)"; exit 1; fi
-          echo "version=$PLUGIN_VERSION" >> $GITHUB_OUTPUT
+      # Step 3: Get the plugin version from the tag name
+      - name: Get Plugin Version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-      - name: Ensure composer.lock is present
+      # Step 4: Install Subversion (SVN)
+      - name: Install Subversion
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      # Step 5: Checkout WordPress SVN Repository
+      - name: Checkout WordPress SVN Repo
         run: |
-          if [ ! -f composer.lock ]; then
-            echo "composer.lock is missing. Please commit it before tagging a release." >&2
-            exit 1
+          svn checkout --depth=immediates "https://plugins.svn.wordpress.org/password-less-login/" svn
+          cd svn
+          svn update --set-depth=infinity trunk assets tags
+
+      # Step 6: Sync Plugin Files to SVN trunk (excluding unnecessary files)
+      - name: Sync Plugin Files to SVN trunk
+        run: |
+          rsync -rc --delete \
+            --exclude=".git*" \
+            --exclude=".github" \
+            --exclude=".gitignore" \
+            --exclude="composer.json" \
+            --exclude="composer.lock" \
+            --exclude="webpack.config.js" \
+            --exclude="svn-assets" \
+            --exclude="svn" \
+            ./ svn/trunk/
+
+      # Step 7: Sync WordPress.org Assets (from `svn-assets/` in Git) to SVN `assets/`
+      - name: Sync WordPress.org Assets to SVN
+        run: |
+          if [ -d svn-assets ]; then
+            rsync -rc --delete svn-assets/ svn/assets/
           fi
 
-      - name: Setup PHP 7.4
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "7.4"
-          coverage: none
-          tools: composer:v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-          cache: "npm"
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.composer/cache
-            vendor
-          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            composer-${{ runner.os }}-
-
-      - name: Cache Node modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-          key: node-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
-          restore-keys: |
-            node-${{ runner.os }}-
-
-      - name: Install PHP dependencies (with dev for build tooling)
+      # Step 8: Commit Plugin Files to Trunk
+      - name: Commit Plugin Files to Trunk
         run: |
-          composer install --no-interaction --prefer-dist
+          cd svn
+          svn add --force trunk assets
+          svn status | grep '^!' | awk '{print $2}' | xargs -r svn delete
+          svn commit -m "Deploy Password Less Login version ${VERSION}" \
+            --username "${{ secrets.SVN_USERNAME }}" \
+            --password "${{ secrets.SVN_PASSWORD }}" \
+            --no-auth-cache --non-interactive
 
-      - name: Build assets (npm)
+      # Step 9: Tag Release in SVN
+      - name: Tag Release in SVN
         run: |
-          if [ -f yarn.lock ]; then
-            corepack enable yarn || true
-            yarn install --frozen-lockfile
-            yarn build
-          else
-            npm ci || npm install
-            npm run build
-          fi
-
-      - name: Optimize production autoloader (remove dev deps)
-        run: |
-          composer install --no-dev --no-interaction --prefer-dist -o
-
-      - name: "Guard: composer.lock unchanged after build"
-        run: |
-          if ! git diff --quiet --exit-code composer.lock; then
-            echo "composer.lock changed during build. Commit updated lock file before release." >&2
-            git --no-pager diff composer.lock | head -n 100
-            exit 1
-          fi
-
-      - name: Install SVN (Subversion)
-        run: |
-          sudo apt-get update -y
-           sudo apt-get install -y subversion
-
-      - name: Clean up sample-data directories from SVN
-        run: |
-          # Checkout the SVN repository to clean up any existing sample-data directories
-          svn checkout "https://plugins.svn.wordpress.org/${{ steps.plugin_name.outputs.plugin_slug }}/trunk" svn-trunk --username "${{ secrets.SVN_USERNAME }}" --password "${{ secrets.SVN_PASSWORD }}" --non-interactive --quiet
-
-          # Remove any sample-data directories if they exist
-          if [ -d "svn-trunk/sample-data" ]; then
-            echo "Removing sample-data directory from SVN..."
-            svn delete svn-trunk/sample-data --username "${{ secrets.SVN_USERNAME }}" --password "${{ secrets.SVN_PASSWORD }}" --non-interactive --quiet
-            svn commit svn-trunk -m "Remove incorrectly deployed sample-data directory" --username "${{ secrets.SVN_USERNAME }}" --password "${{ secrets.SVN_PASSWORD }}" --non-interactive --quiet
-          fi
-
-          # Clean up the temporary checkout
-          rm -rf svn-trunk
-
-      - name: WordPress Plugin Deploy
-        id: deploy
-        uses: 10up/action-wordpress-plugin-deploy@stable
-        with:
-          generate-zip: true
-        env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: ${{ steps.plugin_name.outputs.plugin_slug }}
-
-      - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ steps.version_check.outputs.version }}
-          body: |
-            Release ${{ steps.version_check.outputs.version }} of ${{ steps.plugin_name.outputs.plugin_name }}.
-            Refer to CHANGELOG.md for full details.
-          files: ${{ steps.deploy.outputs.zip-path }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          cd svn
+          svn copy trunk tags/${VERSION}
+          svn commit -m "Tagging Password Less Login version ${VERSION}" \
+            --username "${{ secrets.SVN_USERNAME }}" \
+            --password "${{ secrets.SVN_PASSWORD }}" \
+            --no-auth-cache --non-interactive
