@@ -1,7 +1,7 @@
 name: Deploy Password Less Login to WordPress SVN
 
 on:
-  push: trunk
+  push:
     tags:
       - "v*"  # Runs when a tag like v1.0.0 is pushed
 
