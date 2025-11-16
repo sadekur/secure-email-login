@@ -3,7 +3,7 @@
  * Plugin Name:       Password Less Login
  * Plugin URI:        https://github.com/sadekur/password-less-login
  * Description:       This is a plugin that allows users to log in using just their email without a password.
- * Version:           1.0.0
+ * Version:           1.0.0.1
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Sadekur Rahman
