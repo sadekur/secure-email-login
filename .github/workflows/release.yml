@@ -1,9 +1,8 @@
 name: Deploy Password Less Login to WordPress SVN
-
 on:
   push:
     tags:
-      - "v*"  # Runs when a tag like v1.0.0 is pushed
+      - "v*"
 
 jobs:
   deploy:
@@ -11,31 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the Git repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Install Composer dependencies to regenerate `vendor/`
       - name: Install Composer Dependencies
         run: composer install --no-dev --optimize-autoloader -n
 
-      # Step 3: Get the plugin version from the tag name
       - name: Get Plugin Version
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-      # Step 4: Install Subversion (SVN)
       - name: Install Subversion
         run: sudo apt-get update && sudo apt-get install -y subversion
 
-      # Step 5: Checkout WordPress SVN Repository
       - name: Checkout WordPress SVN Repo
         run: |
           svn checkout --depth=immediates "https://plugins.svn.wordpress.org/password-less-login/" svn
           cd svn
           svn update --set-depth=infinity trunk assets tags
 
-      # Step 6: Sync Plugin Files to SVN trunk (excluding unnecessary files)
       - name: Sync Plugin Files to SVN trunk
         run: |
           rsync -rc --delete \
@@ -49,30 +42,27 @@ jobs:
             --exclude="svn" \
             ./ svn/trunk/
 
-      # Step 7: Sync WordPress.org Assets (from `svn-assets/` in Git) to SVN `assets/`
       - name: Sync WordPress.org Assets to SVN
         run: |
           if [ -d svn-assets ]; then
             rsync -rc --delete svn-assets/ svn/assets/
           fi
 
-      # Step 8: Commit Plugin Files to Trunk
       - name: Commit Plugin Files to Trunk
         run: |
           cd svn
           svn add --force trunk assets
           svn status | grep '^!' | awk '{print $2}' | xargs -r svn delete
           svn commit -m "Deploy Password Less Login version ${VERSION}" \
-            --username "${{ secrets.PLL_PRIVATE_KEY }}" \
+            --username "${{ secrets.PLL_SVN_USERNAME }}" \
             --password "${{ secrets.PLL_SVN_PASSWORD }}" \
             --no-auth-cache --non-interactive
 
-      # Step 9: Tag Release in SVN
       - name: Tag Release in SVN
         run: |
           cd svn
           svn copy trunk tags/${VERSION}
           svn commit -m "Tagging Password Less Login version ${VERSION}" \
-            --username "${{ secrets.PLL_PRIVATE_KEY }}" \
+            --username "${{ secrets.PLL_SVN_USERNAME }}" \
             --password "${{ secrets.PLL_SVN_PASSWORD }}" \
             --no-auth-cache --non-interactive
