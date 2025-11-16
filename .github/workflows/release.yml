@@ -1,7 +1,7 @@
 name: Deploy Password Less Login to WordPress SVN
 
 on:
-  push:
+  push: trunk
     tags:
       - "v*"  # Runs when a tag like v1.0.0 is pushed
 
@@ -63,8 +63,8 @@ jobs:
           svn add --force trunk assets
           svn status | grep '^!' | awk '{print $2}' | xargs -r svn delete
           svn commit -m "Deploy Password Less Login version ${VERSION}" \
-            --username "${{ secrets.SVN_USERNAME }}" \
-            --password "${{ secrets.SVN_PASSWORD }}" \
+            --username "${{ secrets.PLL_PRIVATE_KEY }}" \
+            --password "${{ secrets.PLL_SVN_PASSWORD }}" \
             --no-auth-cache --non-interactive
 
       # Step 9: Tag Release in SVN
@@ -73,6 +73,6 @@ jobs:
           cd svn
           svn copy trunk tags/${VERSION}
           svn commit -m "Tagging Password Less Login version ${VERSION}" \
-            --username "${{ secrets.SVN_USERNAME }}" \
-            --password "${{ secrets.SVN_PASSWORD }}" \
+            --username "${{ secrets.PLL_PRIVATE_KEY }}" \
+            --password "${{ secrets.PLL_SVN_PASSWORD }}" \
             --no-auth-cache --non-interactive
